@@ -17,3 +17,13 @@ def list_notes(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def delete_note(request, pk):
+    try:
+        note = StudyMaterial.objects.get(pk=pk)
+        note.delete()
+        return Response({"message": "Deleted successfully"})
+    except StudyMaterial.DoesNotExist:
+        return Response({"error": "Not found"}, status=404)
